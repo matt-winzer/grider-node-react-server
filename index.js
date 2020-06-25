@@ -10,6 +10,9 @@ require('./services/passport');
 const PORT = process.env.PORT || 5000;
 const mongoURI = process.env.MONGO_URI;
 
+// models
+const User = require('./models/User');
+
 // database connection
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
