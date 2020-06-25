@@ -3,21 +3,24 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 
-// services
-require('./services/passport');
-
 // environment variables
 const PORT = process.env.PORT || 5000;
-const mongoURI = process.env.MONGO_URI;
-
-// models
-const User = require('./models/User');
-
-// database connection
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+const { MONGO_URI } = process.env;
 
 // routers
 const authRoutes = require('./routes/authRoutes');
+
+// models
+require('./models/User');
+
+// services
+require('./services/passport');
+
+// database connection
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // routes
 app.use('/auth/google', authRoutes);
