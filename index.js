@@ -19,10 +19,13 @@ require('./models/User');
 require('./services/passport');
 
 // database connection
-mongoose.connect(MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose
+  .connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then((connection) => console.log('Connected to MongoDB Atlas'))
+  .catch((err) => console.log('Error connecting to MongoDB Atlas', err));
 
 // middleware
 app.use(
@@ -35,6 +38,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // routes
-app.use('/auth/google', authRoutes);
+app.use('/auth', authRoutes);
+
+app.get('/api/current_user', (req, res) => {
+  res.json({
+    message: 'You are logged in!',
+    user: req.user,
+    session: req.session,
+  });
+});
 
 app.listen(PORT, () => console.log(`Server listening on port: ${PORT}`));
